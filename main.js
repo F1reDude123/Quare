@@ -1,9 +1,9 @@
 async function getQueryResults(query) {
-  var res = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${query}&format=json`);
+  var res = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&format=json&origin=*`);
   var page = await res.json();
   var data = [];
   for (var i of page.query.search) {
-    var dataRes = await fetch(`https://en.wikipedia.org/w/api.php?action=parse&page=${i.title}&prop=wikitext&format=json`);
+    var dataRes = await fetch(`https://en.wikipedia.org/w/api.php?action=parse&page=${encodeURIComponent(i.title)}&prop=wikitext&format=json&origin=*`);
     var pageData = await dataRes.json();
     data.push(...pageData.parse.wikitext["*"].split(/[\s.,;:]/));
   }
